@@ -44,6 +44,7 @@ def MakeSessionID():
 
 def ScriptInit():
     print('ScriptInit()')
+    nonlocal useEnvironmentConfigType
 
     sessionID = MakeSessionID()
 
@@ -52,7 +53,8 @@ def ScriptInit():
     config = configparser.ConfigParser()
     config.read('mpspl-git-pull.conf')
 
-    usePath = config[useEnvironmentConfigType]['Path']
+    print('useEnvironmentConfigType=', useEnvironmentConfigType)
+    usePath = config['gen-shcluster']['Path']
     print('Path for {}: {}'.format(useEnvironmentConfigType, usePath))
     
 
@@ -66,11 +68,13 @@ def ScriptDone():
     # Everthing OK at the end
     sys.exit(0)
 
+
 def ScriptUsage():
     print('Usage: {} -s <environment-configurationtype>'. format(sys.argv[0]))
     print()
     print('\t<environment-configurationtype>\tContains the environment with the configuration type.')
     print()
+    print('Script stopped')
     sys.exit(2)
 
 
@@ -87,10 +91,9 @@ def main(argv):
             ScriptUsage()
         elif opt in ("-e"):
             useEnvironmentConfigType = arg
+            print('useEnvironmentConfigType=', useEnvironmentConfigType)
 
-    print('useEnvironmentConfigType=', useEnvironmentConfigType)
-
-    #ScriptInit()
+    ScriptInit()
     #ScriptRun()
    # ScriptDone()
 
