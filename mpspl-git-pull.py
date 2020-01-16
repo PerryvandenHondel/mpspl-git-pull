@@ -30,23 +30,23 @@ import sys
 #
 pathConfig = './mpspl-git-pull.conf'
 sessionID = ''
-useEnvironmentConfigType = ''
+#useEnvironmentConfigType = ''
 usePath = ''
 
 
 def MakeSessionID():
-    #
-    # Make a Session ID in the format of 16 chars long.
-    # Source: https://stackoverflow.com/questions/817882/unique-session-id-in-python
-    #
+    '''
+    Make a Session ID in the format of 16 chars long.
+    Source: https://stackoverflow.com/questions/817882/unique-session-id-in-python
+    '''
     return secrets.token_urlsafe(16)
 
 
 def ScriptInit():
     print('ScriptInit()')
-    nonlocal useEnvironmentConfigType
+    #useEnvironmentConfigType
 
-    sessionID = MakeSessionID()
+    
 
     print('Generated token: {}'.format(sessionID))
 
@@ -70,33 +70,45 @@ def ScriptDone():
 
 
 def ScriptUsage():
-    print('Usage: {} -s <environment-configurationtype>'. format(sys.argv[0]))
     print()
-    print('\t<environment-configurationtype>\tContains the environment with the configuration type.')
+    print('Usage: {} -e <environment-configurationset>'. format(sys.argv[0]))
+    print()
+    print('\t<environment-configuration>\tContains the environment with the configuration set in format: environment-configuration.')
     print()
     print('Script stopped')
     sys.exit(2)
 
 
 def main(argv):
-    print("hello mpspl-git-pull from main()")
+    '''
+    Main script module
+    '''
+    useEnvironmentConfig = ''
 
-    try:
-        opts, args = getopt.getopt(argv, "he:")
-    except getopt.GetOptError:
+    # When there are no command line options parsed; show Usage and quit.
+    if len(argv) == 0:
         ScriptUsage()
 
-    for opt, arg in opts:
-        if opt == '-h':
+    try:
+       opts, args = getopt.getopt(argv, "he:", ["help", "envconfig="])
+    except getopt.GetoptError as err:
+        print(err)
+        ScriptUsage()
+
+    for o, a in opts:
+        if o == "-e":
+            useEnvironmentConfig = a
+        elif o in ("-h", "--help"):
             ScriptUsage()
-        elif opt in ("-e"):
-            useEnvironmentConfigType = arg
-            print('useEnvironmentConfigType=', useEnvironmentConfigType)
+        else:
+            assert False, "Unhandled option"
 
-    ScriptInit()
-    #ScriptRun()
-   # ScriptDone()
+            
+    print('useEnvironmentConfig =', useEnvironmentConfig)
 
+    sessionID = MakeSessionID()
+    print('SessionID = ', sessionID)
 
+ 
 if __name__ == "__main__":
     main(sys.argv[1:])
