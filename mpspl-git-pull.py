@@ -1,22 +1,22 @@
 #!/usr/bin/python3
 
-#
-# mpspl-git-pull.py
-#
-# Marketplace GIT Pull script
-#
-# Flow:
-#       Main()
-#           ScriptInit()
-#               MakeSessionID()
-#           ScriptRun()
-#           ScriptDone()
-#           
+'''
+
+mpspl-git-pull.py
+
+Marketplace GIT Pull script
+
+Flow:
+    Main()
+        MakeSessionID()
+        ProcessEnvironmentConfig()
+
+'''
 
 
-#
-# Import all modules
-#
+'''
+Import used modules
+'''
 import configparser
 import getopt
 import logging
@@ -25,9 +25,9 @@ import secrets
 import sys
 
 
-#
-# Global variables
-#
+'''
+Global variables
+'''
 pathConfig = './mpspl-git-pull.conf'
 sessionID = ''
 
@@ -46,9 +46,9 @@ def ProcessEnvironmentConfig(useEnvironmentConfig, usePath):
 
     useEnvironmentConfig: Name of the Environment Config, example: gen-shcluster 
     '''
+    logging.debug('function=ProcessEnvironmentConfig()')
     print('Path for {} is {}'.format(useEnvironmentConfig, usePath))
     
-
 
 def ScriptUsage():
     print()
