@@ -30,8 +30,6 @@ import sys
 #
 pathConfig = './mpspl-git-pull.conf'
 sessionID = ''
-#useEnvironmentConfigType = ''
-usePath = ''
 
 
 def MakeSessionID():
@@ -41,26 +39,15 @@ def MakeSessionID():
     '''
     return secrets.token_urlsafe(16)
 
-
-def ScriptInit():
-    print('ScriptInit()')
-    #useEnvironmentConfigType
-
-
-    print('useEnvironmentConfigType=', useEnvironmentConfigType)
-    usePath = config['gen-shcluster']['Path']
-    print('Path for {}: {}'.format(useEnvironmentConfigType, usePath))
     
+def ProcessEnvironmentConfig(useEnvironmentConfig, usePath):
+    '''
+    Process the selected Environment Config set
 
-def ScriptRun():
-    print('ScriptRun()')
-    print('')
-
-
-def ScriptDone():
-    print('ScriptDone()')
-    # Everthing OK at the end
-    sys.exit(0)
+    useEnvironmentConfig: Name of the Environment Config, example: gen-shcluster 
+    '''
+    print('Path for {} is {}'.format(useEnvironmentConfig, usePath))
+    
 
 
 def ScriptUsage():
@@ -97,14 +84,12 @@ def main(argv):
         else:
             assert False, "Unhandled option"
 
-            
-    print('useEnvironmentConfig =', useEnvironmentConfig)
-
-    sessionID = MakeSessionID()
-    print('SessionID = ', sessionID)
-
+    # Get a unqiue session id for this run of the script.
+    sessionID = MakeSessionID() 
+    
+    # Init and open the config file.
     config = configparser.ConfigParser()
-    config.read('mpspl-git-pull.conf')
+    config.read(pathConfig)
 
     pathLog = config['Config']['PathLog']
     print('Path for log file is {}'.format(pathLog))
@@ -114,9 +99,12 @@ def main(argv):
     logging.info('session=%s action=Start', sessionID)
     logging.info('sessing=%s environmentconfig=%s', sessionID, useEnvironmentConfig)    
 
-
+    usePath = config[useEnvironmentConfig]['Path']
+    ProcessEnvironmentConfig(useEnvironmentConfig, usePath)
+       
     logging.info('session=%s action=End', sessionID)
-
+    logging.shutdown() # Last line of main()
  
+
 if __name__ == "__main__":
     main(sys.argv[1:])
