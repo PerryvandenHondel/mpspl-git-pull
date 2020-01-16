@@ -48,6 +48,8 @@ def ProcessEnvironmentConfig(useEnvironmentConfig, usePath):
     '''
     logging.debug('function=ProcessEnvironmentConfig()')
     print('Path for {} is {}'.format(useEnvironmentConfig, usePath))
+    currentDir = os.getcwd()
+    print('Current working directory is {}'.format(currentDir))
     
 
 def ScriptUsage():
