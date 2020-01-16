@@ -46,12 +46,6 @@ def ScriptInit():
     print('ScriptInit()')
     #useEnvironmentConfigType
 
-    
-
-    print('Generated token: {}'.format(sessionID))
-
-    config = configparser.ConfigParser()
-    config.read('mpspl-git-pull.conf')
 
     print('useEnvironmentConfigType=', useEnvironmentConfigType)
     usePath = config['gen-shcluster']['Path']
@@ -108,6 +102,20 @@ def main(argv):
 
     sessionID = MakeSessionID()
     print('SessionID = ', sessionID)
+
+    config = configparser.ConfigParser()
+    config.read('mpspl-git-pull.conf')
+
+    pathLog = config['Config']['PathLog']
+    print('Path for log file is {}'.format(pathLog))
+
+    logLevel = logging.DEBUG
+    logging.basicConfig(level=logLevel, filename=pathLog, format='%(asctime)s level=%(levelname)s %(message)s')
+    logging.info('session=%s action=Start', sessionID)
+    logging.info('sessing=%s environmentconfig=%s', sessionID, useEnvironmentConfig)    
+
+
+    logging.info('session=%s action=End', sessionID)
 
  
 if __name__ == "__main__":
