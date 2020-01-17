@@ -56,7 +56,15 @@ def ProcessEnvironmentConfig(useEnvironmentConfig):
     logging.debug('session={} currentdir={}'.format(sessionId, currentDir))
 
     logging.debug('session={} changetodir={}'.format(sessionId, useDirectory))
-    os.chdir(usePath)
+    print('Change to directory: {}'. format(useDirectory))
+    os.chdir(useDirectory)
+
+    # Run the GIT pull command to get all the latest updates.
+    resultCode = os.system('git pull')
+    if resultCode == 0:
+        print('Result code: {}'.format(resultCode))
+        logging.info('session={} command="git pull" resultcode={}'.format(sessionId, resultCode))
+       
 
 
     
