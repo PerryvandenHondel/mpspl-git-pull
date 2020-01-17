@@ -8,7 +8,7 @@ Marketplace GIT Pull script
 
 Flow:
     Main()
-        MakeSessionID()
+        MakesessionId()
         ProcessEnvironmentConfig()
 
 '''
@@ -29,10 +29,10 @@ import sys
 Global variables
 '''
 
-sessionID = ''
+sessionId = ''
 
 
-def MakeSessionID():
+def MakeSessionId():
     '''
     Make a Session ID in the format of 16 chars long.
     Source: https://stackoverflow.com/questions/817882/unique-session-id-in-python
@@ -45,18 +45,17 @@ def ProcessEnvironmentConfig(useEnvironmentConfig):
     Process the selected Environment Config set
     useEnvironmentConfig: Name of the Environment Config, example: gen-shcluster 
     '''
-    logging.debug('session={} function=ProcessEnvironmentConfig()'.format(sessionID))
+    logging.debug('session={} function=ProcessEnvironmentConfig()'.format(sessionId))
     
     currentDir = os.getcwd()
     print('Current working directory is {}'.format(currentDir))
     
     # Read the path to use from the config file.
-    usePath = config[useEnvironmentConfig]['Path']
-    print('Path for {} is {}'.format(useEnvironmentConfig, usePath))
+    useDirectory = config[useEnvironmentConfig]['Directory']
+    print('Directory for {} is {}'.format(useEnvironmentConfig, useDirectory))
     logging.debug('session={} currentdir={}'.format(sessionId, currentDir))
 
-  
-
+    logging.debug('session={} changetodir={}'.format(sessionId, useDirectory))
     os.chdir(usePath)
 
 
@@ -91,15 +90,14 @@ def main(argv):
     for o, a in opts:
         if o == "-e":
             useEnvironmentConfig = a
-        elif o in ("-h", "  # Get a unqiue session id for this run of the script.
-    sessionID = MakeSessionID() --help"):
+        elif o in ("-h", "--help"):
             ScriptUsage()
         else:
             assert False, "Unhandled option"
 
     # Generate a unique session ID, make it global across the script.
-    global sessionID
-    sessionID = MakeSessionID()
+    global sessionId
+    sessionId = MakeSessionId()
 
     global config
     config = configparser.ConfigParser()
@@ -112,12 +110,12 @@ def main(argv):
     logLevel = logging.DEBUG
     logging.basicConfig(level=logLevel, filename=pathLog, format='%(asctime)s level=%(levelname)s %(message)s')
 
-    logging.info('session=%s action=Start', sessionID)
-    logging.info('session=%s environmentconfig=%s', sessionID, useEnvironmentConfig)    
+    logging.info('session=%s action=Start', sessionId)
+    logging.info('session=%s environmentconfig=%s', sessionId, useEnvironmentConfig)    
 
     ProcessEnvironmentConfig(useEnvironmentConfig)
        
-    logging.info('session=%s action=End', sessionID)
+    logging.info('session=%s action=End', sessionId)
     logging.shutdown() # Last line of main()
  
 
