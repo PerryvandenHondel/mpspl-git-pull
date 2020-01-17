@@ -62,9 +62,11 @@ def ProcessEnvironmentConfig(useEnvironmentConfig):
     # Run the GIT pull command to get all the latest updates.
     resultCode = os.system('git pull')
     if resultCode == 0:
-        print('Result code: {}'.format(resultCode))
+        print('Success, result code: {}'.format(resultCode))
         logging.info('session={} command="git pull" resultcode={}'.format(sessionId, resultCode))
-       
+    else:
+        print('Error, result code: {}'.format(resultCode))
+        logging.error('session={} command="git pull" resultcode={}'.format(sessionId, resultCode))
 
 
     
