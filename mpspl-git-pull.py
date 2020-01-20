@@ -34,16 +34,22 @@ sessionId = ''
 
 def MakeSessionId():
     '''
+    
     Make a Session ID in the format of 16 chars long.
+    
     Source: https://stackoverflow.com/questions/817882/unique-session-id-in-python
+    
     '''
     return secrets.token_urlsafe(16)
 
     
 def ProcessEnvironmentConfig(useEnvironmentConfig):
     '''
+
     Process the selected Environment Config set
+    
     useEnvironmentConfig: Name of the Environment Config, example: gen-shcluster 
+    
     '''
     logging.debug('session={} function=ProcessEnvironmentConfig()'.format(sessionId))
     
@@ -64,14 +70,29 @@ def ProcessEnvironmentConfig(useEnvironmentConfig):
     if resultCode == 0:
         print('Success, result code: {}'.format(resultCode))
         logging.info('session={} command="git pull" resultcode={}'.format(sessionId, resultCode))
+
+        # Apply the next action after the git pull was successful
+        useAction = config[useEnvironmentConfig]['Action']
+        print('Run action now {}'.format(useAction))
+        resultCode = os.system(useAction)
+        if resultCode == 0:
+            logging.info('session={} command="run command line {} succes" resultcode={}'.format(sessionId, useAction, resultCode))
+            print('Success running {}'.format(useAction))
+        else:
+            logging.error('session={} command="run command line {} failed" resultcode={}'.format(sessionId, useAction, resultCode))
+            print('Failed tun command line {}'.format(useAction))
     else:
         print('Error, result code: {}'.format(resultCode))
         logging.error('session={} command="git pull" resultcode={}'.format(sessionId, resultCode))
 
-
     
 
 def ScriptUsage():
+    '''
+
+    Show the usage of the program.
+
+    '''
     print()
     print('Usage: {} -e <environment-configurationset>'. format(sys.argv[0]))
     print()
