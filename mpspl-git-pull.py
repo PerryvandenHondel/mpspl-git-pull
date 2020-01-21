@@ -21,7 +21,7 @@ import configparser
 import getopt
 import logging
 import os
-import secrets
+import secrets # Used in secrets.token_urlsafe(16)
 import sys
 
 
