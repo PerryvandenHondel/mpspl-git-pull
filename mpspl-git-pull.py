@@ -34,11 +34,9 @@ sessionId = ''
 
 def MakeSessionId():
     '''
-    
     Make a Session ID in the format of 16 chars long.
     
     Source: https://stackoverflow.com/questions/817882/unique-session-id-in-python
-    
     '''
     return secrets.token_urlsafe(16)
 
@@ -59,11 +57,9 @@ def GetConfigPath():
     
 def ProcessEnvironmentConfig(useEnvironmentConfig):
     '''
-
     Process the selected Environment Config set
     
-    useEnvironmentConfig: Name of the Environment Config, example: gen-shcluster 
-    
+    useEnvironmentConfig: Name of the Environment Config, example: gen-shcluster  
     '''
     logging.debug('session={} function=ProcessEnvironmentConfig()'.format(sessionId))
     
@@ -100,13 +96,14 @@ def ProcessEnvironmentConfig(useEnvironmentConfig):
         logging.error('session={} command="git pull" resultcode={}'.format(sessionId, resultCode))
 
 
+def ScriptTitle():
+    print()
+    print('{} - Get the new updates from the GIT repo and activate the new settings.'.format(os.argv[0]))
 
 
 def ScriptUsage():
     '''
-
     Show the usage of the program.
-
     '''
     print()
     print('Usage: {} -e <environment-configurationset>'. format(sys.argv[0]))
@@ -122,7 +119,8 @@ def main(argv):
     Main script module
     '''
     useEnvironmentConfig = ''
-    GetConfigPath()
+    
+    ScriptTitle()
 
     # When there are no command line options parsed; show Usage and quit.
     if len(argv) == 0:
