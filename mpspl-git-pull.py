@@ -98,7 +98,7 @@ def ProcessEnvironmentConfig(useEnvironmentConfig):
 
 def ScriptTitle():
     print()
-    print('{} - Get the new updates from the GIT repo and activate the new settings.'.format(os.argv[0]))
+    print('{} - Get the new updates from the GIT repo and activate the new settings.'.format(sys.argv[0]))
 
 
 def ScriptUsage():
@@ -109,6 +109,9 @@ def ScriptUsage():
     print('Usage: {} -e <environment-configurationset>'. format(sys.argv[0]))
     print()
     print('\t<environment-configuration>\tContains the environment with the configuration set in format: environment-configuration.')
+    print()
+    print('Example:')
+    print('\t{} -e gen-shcluster'.format(sys.argv[0]))
     print()
     print('Script stopped') 
     sys.exit(2)
