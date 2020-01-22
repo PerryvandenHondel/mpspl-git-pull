@@ -28,17 +28,27 @@ import sys
 '''
 Global variables
 '''
-
 sessionId = ''
+
 
 
 def MakeSessionId():
     '''
     Make a Session ID in the format of 16 chars long.
-    
     Source: https://stackoverflow.com/questions/817882/unique-session-id-in-python
     '''
     return secrets.token_urlsafe(16)
+
+
+
+def GetScriptName():
+    '''
+    Return the script name as in filename.py
+    '''
+    scriptName = sys.argv[0]
+    scriptName = scriptName.replace('./', '')
+    return scriptName
+
 
 
 def GetConfigPath():
@@ -96,9 +106,14 @@ def ProcessEnvironmentConfig(useEnvironmentConfig):
         logging.error('session={} command="git pull" resultcode={}'.format(sessionId, resultCode))
 
 
+
 def ScriptTitle():
+    '''
+    Print a line with the script name and its function.
+    '''
     print()
-    print('{} - Get the new updates from the GIT repo and activate the new settings.'.format(sys.argv[0]))
+    print('{} - Get the new updates from the GIT repo and activate the new settings.'.format(GetScriptName()))
+
 
 
 def ScriptUsage():
@@ -117,9 +132,10 @@ def ScriptUsage():
     sys.exit(2)
 
 
+
 def main(argv):
     '''
-    Main script module
+    Main script module.
     '''
     useEnvironmentConfig = ''
     
@@ -166,5 +182,10 @@ def main(argv):
     logging.shutdown() # Last line of main()
  
 
+
 if __name__ == "__main__":
     main(sys.argv[1:])
+
+
+
+# EOS
