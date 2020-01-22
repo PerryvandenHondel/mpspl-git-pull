@@ -42,6 +42,20 @@ def MakeSessionId():
     '''
     return secrets.token_urlsafe(16)
 
+
+def GetConfigPath():
+    '''
+    Return the full path of the config file based on the script path in the same directory.
+
+    Get the current absolute path of this script,
+    replace .py for .conf
+    Return the path
+    '''
+    path = os.path.abspath(sys.argv[0])
+    path = path.replace('.py', '.conf')
+    return path
+
+
     
 def ProcessEnvironmentConfig(useEnvironmentConfig):
     '''
@@ -85,7 +99,8 @@ def ProcessEnvironmentConfig(useEnvironmentConfig):
         print('Error, result code: {}'.format(resultCode))
         logging.error('session={} command="git pull" resultcode={}'.format(sessionId, resultCode))
 
-    
+
+
 
 def ScriptUsage():
     '''
@@ -107,6 +122,7 @@ def main(argv):
     Main script module
     '''
     useEnvironmentConfig = ''
+    GetConfigPath()
 
     # When there are no command line options parsed; show Usage and quit.
     if len(argv) == 0:
@@ -132,8 +148,7 @@ def main(argv):
 
     global config
     config = configparser.ConfigParser()
-    pathConfig = './mpspl-git-pull.conf'
-    config.read(pathConfig)
+    config.read(GetConfigPath())
 
     pathLog = config['Config']['PathLog']
     print('Path for log file is {}'.format(pathLog))
